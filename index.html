@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Order — XU Press</title>
+  <meta name="description" content="Order books from XU Press, the publishing arm of Xavier University – Ateneo de Cagayan.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --xu-navy:    #1A3E6F;
+      --xu-gold:    #C8922A;
+      --xu-gold-lt: #FDF3E3;
+      --xu-ink:     #1C1C1E;
+      --xu-sub:     #555E6B;
+      --xu-muted:   #8A93A0;
+      --xu-border:  #DDE1E7;
+      --xu-bg:      #F7F8FA;
+      --xu-white:   #FFFFFF;
+      --xu-success: #1A6830;
+      --xu-success-bg: #E6F4EA;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+    }
+
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--xu-bg);
+      color: var(--xu-ink);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--xu-navy);
+      padding: 0 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 0 rgba(255,255,255,.08);
+    }
+    .header-inner {
+      max-width: 780px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      gap: 12px;
+    }
+    .logo-group { display: flex; align-items: center; gap: 10px; }
+    .logo-badge {
+      width: 34px; height: 34px;
+      background: var(--xu-gold);
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .logo-badge i { font-size: 18px; color: var(--xu-white); }
+    .logo-text { line-height: 1.2; }
+    .logo-text strong { font-size: 14px; font-weight: 600; color: var(--xu-white); display: block; }
+    .logo-text span { font-size: 11px; color: rgba(255,255,255,.55); }
+    .header-link {
+      font-size: 12px; color: rgba(255,255,255,.55);
+      text-decoration: none; display: flex; align-items: center; gap: 4px;
+      transition: color .15s;
+    }
+    .header-link:hover { color: rgba(255,255,255,.9); }
+
+    /* ── HERO BANNER ── */
+    .hero {
+      background: var(--xu-navy);
+      padding: 2.5rem 1.5rem 3rem;
+      text-align: center;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--xu-gold);
+      background: rgba(200,146,42,.12);
+      border: 1px solid rgba(200,146,42,.25);
+      border-radius: 999px; padding: 4px 12px;
+      margin-bottom: 1rem;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 700;
+      color: var(--xu-white);
+      line-height: 1.2;
+      margin-bottom: .75rem;
+    }
+    .hero p {
+      font-size: 14px; color: rgba(255,255,255,.6);
+      max-width: 420px; margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ── MAIN LAYOUT ── */
+    .page-body {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 2rem 1rem 4rem;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--xu-white);
+      border: 1px solid var(--xu-border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .card-title {
+      font-size: 11px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .07em;
+      color: var(--xu-muted);
+      margin-bottom: 1.25rem;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .card-title i { font-size: 14px; }
+
+    /* ── FORM ELEMENTS ── */
+    .row { display: grid; gap: 12px; margin-bottom: 12px; }
+    .row.col2 { grid-template-columns: 1fr 1fr; }
+    .row.col1 { grid-template-columns: 1fr; }
+
+    label {
+      display: block;
+      font-size: 12px; font-weight: 500;
+      color: var(--xu-sub);
+      margin-bottom: 5px;
+    }
+    label .req { color: var(--xu-gold); margin-left: 2px; }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: var(--xu-ink);
+      background: var(--xu-white);
+      border: 1px solid var(--xu-border);
+      border-radius: var(--radius-sm);
+      padding: 9px 12px;
+      transition: border-color .15s, box-shadow .15s;
+      outline: none;
+      appearance: none;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--xu-navy);
+      box-shadow: 0 0 0 3px rgba(26,62,111,.1);
+    }
+    input::placeholder, textarea::placeholder { color: var(--xu-muted); }
+    textarea { resize: vertical; min-height: 80px; }
+    select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238A93A0' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 32px; cursor: pointer; }
+
+    /* ── NOTE BOX ── */
+    .note-box {
+      background: var(--xu-gold-lt);
+      border-left: 3px solid var(--xu-gold);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 10px 14px;
+      font-size: 12.5px;
+      color: #7A5A1A;
+      line-height: 1.65;
+      margin-top: 12px;
+      display: flex; gap: 8px;
+    }
+    .note-box i { flex-shrink: 0; margin-top: 1px; font-size: 14px; }
+
+    /* ── BOOK ROWS ── */
+    .book-row {
+      display: grid;
+      grid-template-columns: 1fr 80px 32px;
+      gap: 10px;
+      align-items: end;
+      margin-bottom: 10px;
+    }
+    .remove-btn {
+      background: none; border: 1px solid var(--xu-border);
+      border-radius: var(--radius-sm);
+      width: 32px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--xu-muted);
+      transition: all .15s; font-size: 16px;
+    }
+    .remove-btn:hover { border-color: #E53935; color: #E53935; background: #FFF5F5; }
+    .add-btn {
+      background: none; border: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px; font-weight: 500;
+      color: var(--xu-navy);
+      cursor: pointer;
+      display: flex; align-items: center; gap: 5px;
+      padding: 4px 0; margin-top: 4px;
+      transition: opacity .15s;
+    }
+    .add-btn:hover { opacity: .7; }
+    .total-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid var(--xu-border);
+      padding-top: 14px; margin-top: 12px;
+    }
+    .total-label { font-size: 13px; color: var(--xu-sub); }
+    .total-amount { font-size: 22px; font-weight: 600; color: var(--xu-navy); font-family: 'Playfair Display', serif; }
+
+    /* ── PAYMENT CARDS ── */
+    .pay-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+    .pay-card {
+      border: 1.5px solid var(--xu-border);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: all .15s;
+      user-select: none;
+    }
+    .pay-card:hover { border-color: var(--xu-navy); }
+    .pay-card.active {
+      border-color: var(--xu-navy);
+      background: rgba(26,62,111,.04);
+    }
+    .pay-card-head { font-size: 13.5px; font-weight: 600; color: var(--xu-ink); display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+    .pay-card-head i { font-size: 16px; color: var(--xu-navy); }
+    .pay-card-sub { font-size: 11.5px; color: var(--xu-muted); line-height: 1.5; }
+
+    .pay-detail {
+      background: var(--xu-bg);
+      border: 1px solid var(--xu-border);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--xu-sub);
+      line-height: 1.75;
+      margin-bottom: 14px;
+    }
+    .pay-detail strong { color: var(--xu-ink); font-weight: 600; }
+    .pay-detail .mono { font-family: 'Courier New', monospace; font-size: 13px; background: var(--xu-border); padding: 1px 6px; border-radius: 4px; color: var(--xu-ink); }
+
+    /* ── FILE UPLOAD ── */
+    .upload-zone {
+      border: 1.5px dashed var(--xu-border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all .15s;
+      margin-top: 6px;
+    }
+    .upload-zone:hover { border-color: var(--xu-navy); background: rgba(26,62,111,.02); }
+    .upload-zone.has-file { border-color: var(--xu-success); background: var(--xu-success-bg); }
+    .upload-zone i { font-size: 28px; color: var(--xu-muted); display: block; margin-bottom: 6px; }
+    .upload-zone p { font-size: 13px; color: var(--xu-sub); }
+    .upload-zone small { font-size: 11px; color: var(--xu-muted); margin-top: 3px; display: block; }
+    .upload-name { font-size: 12px; color: var(--xu-success); margin-top: 6px; font-weight: 500; }
+
+    /* ── SUBMIT ── */
+    .submit-btn {
+      width: 100%;
+      background: var(--xu-navy);
+      color: var(--xu-white);
+      border: none;
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: opacity .15s, transform .1s;
+      margin-top: 1rem;
+    }
+    .submit-btn:hover { opacity: .9; }
+    .submit-btn:active { transform: scale(.99); }
+
+    /* ── SUCCESS ── */
+    .success-card {
+      display: none;
+      background: var(--xu-white);
+      border: 1px solid var(--xu-border);
+      border-radius: var(--radius-lg);
+      padding: 3rem 2rem;
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .success-icon {
+      width: 64px; height: 64px;
+      background: var(--xu-success-bg);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.25rem;
+    }
+    .success-icon i { font-size: 32px; color: var(--xu-success); }
+    .success-card h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--xu-navy);
+      margin-bottom: .5rem;
+    }
+    .success-card p { font-size: 13.5px; color: var(--xu-sub); line-height: 1.7; max-width: 380px; margin: 0 auto .5rem; }
+    .success-divider { border: none; border-top: 1px solid var(--xu-border); margin: 1.5rem 0; }
+    .success-detail { font-size: 12px; color: var(--xu-muted); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--xu-navy);
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 12px;
+      color: rgba(255,255,255,.4);
+      line-height: 1.8;
+    }
+    footer a { color: rgba(255,255,255,.55); text-decoration: none; }
+    footer a:hover { color: var(--xu-gold); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 520px) {
+      .row.col2 { grid-template-columns: 1fr; }
+      .pay-opts { grid-template-columns: 1fr; }
+      .book-row { grid-template-columns: 1fr 70px 32px; }
+      .hero { padding: 2rem 1rem 2.5rem; }
+    }
+
+    /* ── ACCESSIBILITY ── */
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
+    :focus-visible { outline: 2px solid var(--xu-gold); outline-offset: 2px; }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="logo-group">
+      <div class="logo-badge"><i class="ti ti-book-2" aria-hidden="true"></i></div>
+      <div class="logo-text">
+        <strong>XU Press</strong>
+        <span>Xavier University – Ateneo de Cagayan</span>
+      </div>
+    </div>
+    <a class="header-link" href="https://www.xu.edu.ph/xu-press" target="_blank" rel="noopener">
+      <i class="ti ti-arrow-left" aria-hidden="true"></i> Back to XU Press
+    </a>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow"><i class="ti ti-shopping-bag" aria-hidden="true"></i> Book Order</div>
+  <h1>Order from XU Press</h1>
+  <p>Fill out the form below to place your order. We will confirm your payment and send your shipping fee within 1–2 business days.</p>
+</div>
+
+<!-- MAIN FORM -->
+<main class="page-body">
+  <div id="order-form">
+
+    <!-- 1. CUSTOMER INFO -->
+    <div class="card">
+      <p class="card-title"><i class="ti ti-user" aria-hidden="true"></i> Customer information</p>
+      <div class="row col2">
+        <div><label for="fname">First name <span class="req">*</span></label><input type="text" id="fname" placeholder="Maria" autocomplete="given-name"></div>
+        <div><label for="lname">Last name <span class="req">*</span></label><input type="text" id="lname" placeholder="Santos" autocomplete="family-name"></div>
+      </div>
+      <div class="row col2">
+        <div><label for="email">Email address <span class="req">*</span></label><input type="email" id="email" placeholder="maria@email.com" autocomplete="email"></div>
+        <div><label for="phone">Phone / mobile <span class="req">*</span></label><input type="tel" id="phone" placeholder="09XX-XXX-XXXX" autocomplete="tel"></div>
+      </div>
+    </div>
+
+    <!-- 2. SHIPPING ADDRESS -->
+    <div class="card">
+      <p class="card-title"><i class="ti ti-map-pin" aria-hidden="true"></i> Shipping address</p>
+      <div class="row col1">
+        <div><label for="addr">Street / barangay <span class="req">*</span></label><input type="text" id="addr" placeholder="123 Rizal St., Brgy. Nazareth" autocomplete="address-line1"></div>
+      </div>
+      <div class="row col2">
+        <div><label for="city">City / municipality <span class="req">*</span></label><input type="text" id="city" placeholder="Cagayan de Oro City" autocomplete="address-level2"></div>
+        <div><label for="province">Province</label><input type="text" id="province" placeholder="Misamis Oriental" autocomplete="address-level1"></div>
+      </div>
+      <div class="row col2">
+        <div><label for="region">Region</label><input type="text" id="region" placeholder="Region X"></div>
+        <div><label for="zip">ZIP code</label><input type="text" id="zip" placeholder="9000" autocomplete="postal-code"></div>
+      </div>
+      <div class="note-box">
+        <i class="ti ti-truck" aria-hidden="true"></i>
+        <span>Shipping fee will be communicated after we confirm your order and payment. It will be collected separately via QRPh — no need to pay it now.</span>
+      </div>
+    </div>
+
+    <!-- 3. BOOK SELECTION -->
+    <div class="card">
+      <p class="card-title"><i class="ti ti-books" aria-hidden="true"></i> Book selection</p>
+      <div id="book-list"></div>
+      <button class="add-btn" onclick="addBookRow()" type="button">
+        <i class="ti ti-plus" aria-hidden="true"></i> Add another title
+      </button>
+      <div class="total-bar">
+        <span class="total-label">Total amount due <em style="font-size:11px;color:var(--xu-muted)">(excl. shipping)</em></span>
+        <span class="total-amount" id="total-display">₱0.00</span>
+      </div>
+    </div>
+
+    <!-- 4. PAYMENT -->
+    <div class="card">
+      <p class="card-title"><i class="ti ti-credit-card" aria-hidden="true"></i> Payment</p>
+      <div class="pay-opts">
+        <div class="pay-card active" id="pay-qr" onclick="selectPay('qr')" role="button" tabindex="0" aria-pressed="true">
+          <div class="pay-card-head"><i class="ti ti-qrcode" aria-hidden="true"></i> QRPh</div>
+          <div class="pay-card-sub">GCash, Maya, or any QRPh-enabled bank</div>
+        </div>
+        <div class="pay-card" id="pay-bank" onclick="selectPay('bank')" role="button" tabindex="0" aria-pressed="false">
+          <div class="pay-card-head"><i class="ti ti-building-bank" aria-hidden="true"></i> Bank transfer</div>
+          <div class="pay-card-sub">Direct bank deposit or online transfer</div>
+        </div>
+      </div>
+
+      <div id="pay-detail-box" class="pay-detail"></div>
+
+      <div class="row col1" style="margin-bottom:14px">
+        <div>
+          <label for="ref-num">Reference / transaction number <span class="req">*</span></label>
+          <input type="text" id="ref-num" placeholder="e.g. GCash ref 1234567890">
+        </div>
+      </div>
+
+      <label>Proof of payment <span class="req">*</span></label>
+      <div class="upload-zone" id="upload-zone" onclick="document.getElementById('proof-file').click()" role="button" tabindex="0" aria-label="Upload proof of payment">
+        <i class="ti ti-upload" aria-hidden="true"></i>
+        <p>Tap to upload screenshot or photo of receipt</p>
+        <small>JPG, PNG, PDF — max 5 MB</small>
+      </div>
+      <input type="file" id="proof-file" accept="image/*,.pdf" style="display:none" onchange="handleUpload(this)">
+      <p class="upload-name" id="upload-name"></p>
+    </div>
+
+    <!-- 5. NOTES -->
+    <div class="card">
+      <p class="card-title"><i class="ti ti-notes" aria-hidden="true"></i> Additional notes</p>
+      <textarea id="notes" placeholder="Special instructions, gift wrapping request, or any other details..."></textarea>
+    </div>
+
+    <button class="submit-btn" onclick="submitOrder()" type="button">
+      <i class="ti ti-send" aria-hidden="true"></i> Submit order
+    </button>
+
+  </div><!-- /#order-form -->
+
+  <!-- SUCCESS -->
+  <div class="success-card" id="success-box" role="alert">
+    <div class="success-icon"><i class="ti ti-circle-check" aria-hidden="true"></i></div>
+    <h2>Order received!</h2>
+    <p>Thank you. XU Press will review your payment and get back to you within <strong>1–2 business days</strong> with your shipping fee and estimated delivery date.</p>
+    <p>Shipping will be collected separately via QRPh.</p>
+    <hr class="success-divider">
+    <p class="success-detail">Questions? Email <a href="mailto:xupress@xu.edu.ph">xupress@xu.edu.ph</a> or visit the XU Press office on campus.</p>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong style="color:rgba(255,255,255,.7)">XU Press</strong> · Xavier University – Ateneo de Cagayan</p>
+  <p>Corrales Avenue, Cagayan de Oro City 9000, Philippines</p>
+  <p style="margin-top:6px"><a href="https://www.xu.edu.ph/xu-press">xu.edu.ph/xu-press</a></p>
+</footer>
+
+<script>
+  /* ── BOOK CATALOG ── update titles and prices here ── */
+  const BOOKS = [
+    { title: "Select a title...", price: 0 },
+    { title: "Kinaadman: A Journal of Southern Philippine Literature (Vol. 1)", price: 350 },
+    { title: "Kinaadman: A Journal of Southern Philippine Literature (Vol. 2)", price: 350 },
+    { title: "Xavier Studies in the Social Sciences and Humanities", price: 450 },
+    { title: "Mindanao: The Long Journey (Revised Edition)", price: 520 },
+    { title: "Sining at Kultura sa Mindanao", price: 480 },
+    { title: "Ignatian Leadership and Formation", price: 390 },
+    { title: "Ecology and Sustainability in Northern Mindanao", price: 410 },
+  ];
+
+  /* ── PAYMENT DETAILS ── update QR instructions and bank details here ── */
+  const PAY_DETAILS = {
+    qr: `<strong>QRPh payment</strong><br>
+         Scan the QR code at the XU Press office or as posted on the XU Press page.<br>
+         Reference name: <span class="mono">XUPress-[YourLastName]</span>`,
+    bank: `<strong>Bank transfer / deposit</strong><br>
+           Bank: <span class="mono">Landbank of the Philippines</span><br>
+           Account name: <span class="mono">Xavier University – Ateneo de Cagayan</span><br>
+           Account number: <span class="mono">Contact XU Press for details</span><br>
+           Reference: <span class="mono">XUPress-[YourLastName]</span>`
+  };
+
+  let rowCount = 0;
+
+  function addBookRow() {
+    rowCount++;
+    const id = rowCount;
+    const div = document.createElement('div');
+    div.className = 'book-row';
+    div.id = 'book-row-' + id;
+    const isFirst = id === 1;
+    div.innerHTML = `
+      <div>
+        ${isFirst ? '<label for="bk-' + id + '">Book title <span class="req">*</span></label>' : ''}
+        <select id="bk-${id}" onchange="calcTotal()" aria-label="Book title">
+          ${BOOKS.map((b, i) =>
+            `<option value="${b.price}" ${i === 0 ? 'disabled selected' : ''}>
+              ${b.title}${b.price > 0 ? ' — ₱' + b.price.toLocaleString() : ''}
+            </option>`
+          ).join('')}
+        </select>
+      </div>
+      <div>
+        ${isFirst ? '<label for="qty-' + id + '">Qty</label>' : ''}
+        <input type="number" class="qty-input" id="qty-${id}" value="1" min="1" max="99" onchange="calcTotal()" aria-label="Quantity">
+      </div>
+      <button class="remove-btn" onclick="removeRow(${id})" type="button" aria-label="Remove this book" title="Remove">
+        <i class="ti ti-x" aria-hidden="true"></i>
+      </button>`;
+    document.getElementById('book-list').appendChild(div);
+  }
+
+  function removeRow(id) {
+    const el = document.getElementById('book-row-' + id);
+    if (el) el.remove();
+    calcTotal();
+  }
+
+  function calcTotal() {
+    let total = 0;
+    document.querySelectorAll('[id^="bk-"]').forEach(sel => {
+      const n = sel.id.replace('bk-', '');
+      const price = parseFloat(sel.value) || 0;
+      const qty = parseInt(document.getElementById('qty-' + n)?.value) || 1;
+      total += price * qty;
+    });
+    document.getElementById('total-display').textContent =
+      '₱' + total.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function selectPay(type) {
+    ['qr', 'bank'].forEach(t => {
+      const card = document.getElementById('pay-' + t);
+      card.classList.toggle('active', t === type);
+      card.setAttribute('aria-pressed', t === type ? 'true' : 'false');
+    });
+    document.getElementById('pay-detail-box').innerHTML = PAY_DETAILS[type];
+  }
+
+  function handleUpload(input) {
+    const f = input.files[0];
+    const zone = document.getElementById('upload-zone');
+    const name = document.getElementById('upload-name');
+    if (f) {
+      zone.classList.add('has-file');
+      zone.querySelector('i').className = 'ti ti-circle-check';
+      zone.querySelector('p').textContent = f.name;
+      name.textContent = '✓ File ready to submit';
+    }
+  }
+
+  function submitOrder() {
+    const required = [
+      { id: 'fname', label: 'First name' },
+      { id: 'lname', label: 'Last name' },
+      { id: 'email', label: 'Email address' },
+      { id: 'phone', label: 'Phone / mobile' },
+      { id: 'addr',  label: 'Street / barangay' },
+      { id: 'city',  label: 'City / municipality' },
+    ];
+    for (const f of required) {
+      const el = document.getElementById(f.id);
+      if (!el?.value.trim()) {
+        el?.focus();
+        el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el?.style && (el.style.borderColor = '#E53935');
+        setTimeout(() => el && (el.style.borderColor = ''), 2000);
+        alert('Please fill in: ' + f.label);
+        return;
+      }
+    }
+    const hasBook = [...document.querySelectorAll('[id^="bk-"]')].some(s => parseFloat(s.value) > 0);
+    if (!hasBook) { alert('Please select at least one book title.'); return; }
+    if (!document.getElementById('ref-num').value.trim()) {
+      alert('Please enter your payment reference number.');
+      document.getElementById('ref-num').focus();
+      return;
+    }
+    document.getElementById('order-form').style.display = 'none';
+    const s = document.getElementById('success-box');
+    s.style.display = 'block';
+    s.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  /* Keyboard support for pay cards */
+  document.querySelectorAll('.pay-card').forEach(card => {
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
+    });
+  });
+
+  /* Init */
+  addBookRow();
+  selectPay('qr');
+</script>
+</body>
+</html>
